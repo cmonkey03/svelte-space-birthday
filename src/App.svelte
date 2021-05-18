@@ -1,6 +1,10 @@
 <script>
 	let date, promise;
+	let currentCarouselIndex = 0;
 	const today = new Date().toISOString().split("T")[0];
+
+	const next = (carouselLength) =>
+	  currentCarouselIndex = (currentCarouselIndex + 1) % carouselLength
 
 	async function getImageUrls() {
 		const foundDate = await fetch(`https://epic.gsfc.nasa.gov/api/natural/all`)
@@ -22,13 +26,13 @@
 				throw new Error(error);
 			});
 
-		const imageUrls = await fetch(`https://epic.gsfc.nasa.gov/api/enhanced/date/${foundDate}`)
+		const imageUrls = await fetch(`https://epic.gsfc.nasa.gov/api/natural/date/${foundDate}`)
 			.then(res => res.json())
 			.then(data => {
 				const pathDate = foundDate.replaceAll('-', '/');
 				
 				return data.map((item) => {
-					return `https://epic.gsfc.nasa.gov/archive/natural/${pathDate}/png/${item.image}`
+					return `https://epic.gsfc.nasa.gov/archive/natural/${pathDate}/png/${item.image}.png`
 				});
 			})
 			.catch(error => {
@@ -54,17 +58,23 @@
 	>
 
 {#await promise}
-	<!-- optionally show something while promise is pending -->
-	<h2>Asking NASA for your birthday picture...</h2>
+	<h2>Asking NASA for your birthday picture(s)...</h2>
 {:then links}
-	{#each links as link, i}
-		<img
-			alt="Your bEARTHday ${i}"
-			style="height: 50%; width: 50%;"
-			src={link}
-		/>
-	{/each}
+	{#if links}
+		<div>
+			<p>{links.length} earthpics found</p>
+			{#each links as link, index}
+				{#if index == currentCarouselIndex}
+					<img
+						alt="Your bEARTHday ${index}"
+						style="height: 50%; width: 50%;"
+						src={link}
+					/>
+				{/if}
+			{/each}
+		</div>
+		<button on:click={next(links.length)}>Next</button>
+	{/if}
 {:catch error}
-	<!-- optionally show something while promise was rejected -->
 	<p style="color: red">Oops! There seems to be an issue, please try again.</p>
 {/await}
