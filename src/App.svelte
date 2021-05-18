@@ -3,9 +3,6 @@
 	let currentCarouselIndex = 0;
 	const today = new Date().toISOString().split("T")[0];
 
-	const next = (carouselLength) =>
-	  currentCarouselIndex = (currentCarouselIndex + 1) % carouselLength
-
 	async function getImageUrls() {
 		const foundDate = await fetch(`https://epic.gsfc.nasa.gov/api/natural/all`)
 			.then(res => res.json())
@@ -45,10 +42,14 @@
 	const handleChange = () => {
 		promise = getImageUrls();
 	}
+
+	const next = (carouselLength) =>
+	  currentCarouselIndex = (currentCarouselIndex + 1) % carouselLength
+
 </script>
 
 <h1 style="text-align: center">Hello Sveltian Space Voyager!</h1>
-<p>Please enter your date-of-birth, and we'll ask NASA to show us earth on your most recent birthday!</p> 
+<p>Please enter your date of birth, and we'll ask NASA to show you Earth on your most recent birthday!</p> 
 <input
 	type="date"
 	min="1899-01-01"
@@ -61,19 +62,21 @@
 	<h2>Asking NASA for your birthday picture(s)...</h2>
 {:then links}
 	{#if links}
-		<div>
-			<p>{links.length} earthpics found</p>
-			{#each links as link, index}
-				{#if index == currentCarouselIndex}
-					<img
-						alt="Your bEARTHday ${index}"
-						style="height: 50%; width: 50%;"
-						src={link}
-					/>
-				{/if}
-			{/each}
+		<div style="text-align: center;">
+			<div >
+				<p><b>{links.length} bEARTHday pictures found</b></p>
+				{#each links as link, index}
+					{#if index == currentCarouselIndex}
+						<img
+							alt="Your bEARTHday ${index}"
+							style="height: 50%; width: 50%;"
+							src={link}
+						/>
+					{/if}
+				{/each}
+			</div>
+			<button on:click={next(links.length)}>Next</button>
 		</div>
-		<button on:click={next(links.length)}>Next</button>
 	{/if}
 {:catch error}
 	<p style="color: red">Oops! There seems to be an issue, please try again.</p>
