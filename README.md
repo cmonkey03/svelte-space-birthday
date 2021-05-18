@@ -2,26 +2,27 @@
 
 ---
 
-# svelte app
+# Svelte Space Birthday App
 
-This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
+This project is made from [Svelte](https://svelte.dev) apps.
 
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
+I haven't worked with Svelte before, and thought it would be fun to use in this little project.
+Once you have the application running, just enter your birthday and see pictures of Earth
+on your most recent birthday.
 
-```bash
-npx degit sveltejs/template svelte-app
-cd svelte-app
-```
+This is an MVP, to grow from here I'd improve styling, particularly the jumpy "Next" button and
+image transitions. I'd also refactor the code to read a bit cleaner and add some tests.
+
+NASA APIs are great fun, have a look at some [Jovian Tempestology](https://github.com/HackTheSolarSystem/StormsOfJupiter).
 
 *Note that you will need to have [Node.js](https://nodejs.org) installed.*
-
 
 ## Get started
 
 Install the dependencies...
 
 ```bash
-cd svelte-app
+cd svelte-space-birthday
 npm install
 ```
 
